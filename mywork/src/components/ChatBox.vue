@@ -3,7 +3,7 @@
  * @Author: hvinci
  * @Date: 2023-11-02 20:13:14
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-18 21:20:33
+ * @LastEditTime: 2023-11-19 22:56:46
  * @Description: 聊天框部分
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -216,7 +216,7 @@ export default defineComponent({
                 chat.addMessage({
                     author: "Service",
                     type: "text",
-                    data: { text: "喵，" + message + " 喵" }
+                    data: { text: message }
                 });
             }
         }

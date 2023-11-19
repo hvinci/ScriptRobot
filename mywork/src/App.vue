@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-03 22:19:08
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-13 15:23:02
+ * @LastEditTime: 2023-11-19 22:51:58
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -10,8 +10,8 @@
 <template>
   <Chat id="chat" />
   <div id="app">
-    <img id="logo" alt="vinci logo" src="./assets/title.jpg" />
-    <h1>vinci's Agent Cat</h1>
+    <img id="logo" alt="vinci logo" src="./assets/logo.png" />
+    <h1>vinci's Agent</h1>
     <BottonDesign /> 
     <p><b>领域特定语言的客服机器人 made by vinci</b></p>
     <TechTime />

@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-01 21:13:22
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 21:59:23
+ * @LastEditTime: 2023-11-19 23:38:20
  * @Description: 翻译语法树
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -16,12 +16,21 @@ import { AST, VARIABLE, ANSWER, STATUS } from "./interface";
  */
 export const getVari = (ast: AST): VARIABLE => ast.variable;
 
+/**
+ * @description: 初始化
+ * @param {AST} ast
+ * @param {VARIABLE} variable
+ * @return {*}
+ */
 export const init = (ast: AST, variable: VARIABLE): STATUS => ({
     nowStepID: ast.entry, // 初始化step为入口welcome
     variable,
 });
 
-
+/**
+ * @description: 执行脚本
+ * @return {*}
+ */
 export function translate(
     ast: AST,        // AST（抽象语法树）对象，表示对话的结构
     status: STATUS,      // 状态对象，包含当前对话的状态信息

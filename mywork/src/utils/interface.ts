@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-10-23 23:22:40
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-18 17:14:01
+ * @LastEditTime: 2023-11-19 23:17:40
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -83,6 +83,7 @@ export interface DEFAULT {
     /**行号 */
     lineNum: number;
 }
+
 /**
  * Hashtable类型
  * @param key是哈希表的键

@@ -4,7 +4,7 @@
  * @Author: hvinci
  * @Date: 2023-11-02 21:13:08
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-18 18:14:01
+ * @LastEditTime: 2023-11-19 23:41:19
  * @Description: 按钮部分设计
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
@@ -74,7 +74,6 @@ export default defineComponent({
      * @return {*}
      */
     const ScriptChange = (script: string) => {
-      console.log('Script has changed:', script);
       chat.scriptinfo = script;
     };
 
@@ -169,7 +168,6 @@ export default defineComponent({
     };
 
     chat.scriptinfo = bus.defaultScript;
-    console.log("Using defaultScript as scriptinfo:", chat.scriptinfo);
     
     const bottomLeftButtonClick = () => {
           ElMessageBox.alert(

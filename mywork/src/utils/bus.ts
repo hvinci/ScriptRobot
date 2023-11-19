@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-10-23 23:06:45
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-18 16:44:15
+ * @LastEditTime: 2023-11-19 23:42:19
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -54,7 +54,7 @@ watchEffect(() => {
     try {
         bus.ast = parse(val);
         console.log("Successfully parsed new activeScript:", val);
-        console.log("Parsed AST:", ast); // 添加这行代码
+        console.log("Parsed AST:", ast); 
         if (val !== oldVal) {
             localStorage.setItem('activeScript', val);
             console.log("Updated activeScript in localStorage:", val);
