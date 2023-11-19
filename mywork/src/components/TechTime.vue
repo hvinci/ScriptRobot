@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-18 05:21:46
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 13:16:22
+ * @LastEditTime: 2023-11-20 00:21:06
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -61,7 +61,6 @@ export default {
 
 .time {
   animation: pulse 1s ease-in-out infinite;
-  /* Add pulsating animation to the time */
 }
 
 @keyframes pulse {

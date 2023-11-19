@@ -4,7 +4,7 @@
  * @Author: hvinci
  * @Date: 2023-11-02 21:13:08
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 23:41:19
+ * @LastEditTime: 2023-11-20 00:20:24
  * @Description: 按钮部分设计
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
@@ -175,19 +175,19 @@ export default defineComponent({
             ,
             "Announcement", {
       confirmButtonText: "OK",
-      dangerouslyUseHTMLString: true, // Add this property to enable HTML in the message
-      type: "info", // You can change the type to "success", "warning", or "error" based on the style you prefer
+      dangerouslyUseHTMLString: true, 
+      type: "info", 
     });
   }
 
     return {
-      ...toRefs(chat), // 添加 chat 对象的属性到返回的对象中
-      ScriptChange,     // 添加 ScriptChange 方法到返回的对象中
+      ...toRefs(chat), 
+      ScriptChange,    
       apply,
       reset,
       uploadFile,
       download,
-      bottomLeftButtonClick, // Add this line
+      bottomLeftButtonClick, 
     };
   },
 });
@@ -251,7 +251,7 @@ export default defineComponent({
   box-shadow: 0px 0px 50px rgb(255, 255, 255);
   /* 使用亮黄色阴影 */
   color: #fff;
-  /* 按钮文字在悬停时的颜色，你可以根据需要调整颜色值 */
+
   animation: moveUpAndDown 0.5s ease infinite;
   /* 应用关键帧动画 */
 }
@@ -273,6 +273,6 @@ export default defineComponent({
   position: fixed;
   bottom: 90px;
   left: 640px;
-  z-index: 999; /* Adjust the z-index as needed */
+  z-index: 999; 
 }
 </style>

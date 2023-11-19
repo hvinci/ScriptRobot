@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-03 22:19:08
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 22:51:58
+ * @LastEditTime: 2023-11-20 00:23:11
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -23,7 +23,7 @@
 import { defineComponent } from "vue";
 import Chat from "./components/ChatBox.vue";
 import BottonDesign from "./components/Botton.vue";
-import TechTime from "./components/TechTime.vue"; // Import the TechTime component
+import TechTime from "./components/TechTime.vue"; 
 
 export default defineComponent({
   name: "App",
@@ -103,11 +103,8 @@ export default defineComponent({
   font-size: 16px;
   color: rgb(233, 167, 13);
   writing-mode: vertical-rl;
-  /* Vertical writing mode */
   text-orientation: upright;
-  /* Vertical text orientation */
   animation: blink 1s infinite alternate;
-  /* CSS animation for blinking effect */
 }
 
 @keyframes blink {
