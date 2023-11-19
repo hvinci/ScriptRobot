@@ -1,0 +1,132 @@
+/*
+ * @Author: hvinci
+ * @Date: 2023-11-01 21:13:22
+ * @LastEditors: hvinci
+ * @LastEditTime: 2023-11-18 17:38:33
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
+
+
+import { AST, VARIABLE, ANSWER, STATUS } from "./interface";
+
+/**
+ * 获取语法树的变量
+ * @param ast 
+ * @returns 
+ */
+
+export const getVariable = (ast: AST): VARIABLE => ast.variable;
+
+export const init = (ast: AST, variable: VARIABLE): STATUS => ({
+    nowStepID: ast.entry,
+    variable,
+});
+
+/**
+ * @description: 
+ * @return {*}
+ */
+export function translate(
+    astTree: AST,
+    status: STATUS,
+    answer: string,
+    enter = false,
+    silence = false
+): ANSWER {
+    const calculate = astTree.hash[status.nowStepID].calculate;
+    // 如果是初始步骤
+    if (enter) {
+        const message = processSpeakInfo(astTree, status, "");
+        const listenInfo = astTree.hash[status.nowStepID].listen;
+    
+        return {
+            message: message,
+            finish: astTree.exit.includes(status.nowStepID),
+            time: listenInfo ? listenInfo.limit : 0,
+        };
+    } else if (calculate) {
+        try {
+            calculate.forEach(([variable, nextStepID, expression]) => {
+                const tmpCul = expression.replace(variable, status.variable[variable]).replace("INPUT", answer);
+                status.variable[variable] = eval(tmpCul).toString();
+                status.nowStepID = nextStepID;
+            });
+        } catch (e) {
+            throw new Error("Calculate error");
+        }
+    }
+    // 如果是安静模式（silence 为 true），根据 silence 或 default 进行相应的跳转。
+    else if (silence) {
+        const { silence, default: defaultList } = astTree.hash[status.nowStepID];
+        
+        if (silence) {
+            status.nowStepID = silence.stepID;
+        } else if (defaultList) {
+            status.nowStepID = defaultList.stepID;
+        } else {
+            throw new Error("No silence step or default step");
+        }
+    }
+    
+
+    else {
+        const { branch, default: defaultList } = astTree.hash[status.nowStepID];
+        const matchingBranch = branch?.find(j => answer.includes(j.answer));
+    
+        status.nowStepID = matchingBranch ? matchingBranch.stepID : (defaultList ? defaultList.stepID : '');
+    
+        if (!status.nowStepID) {
+            throw new Error("No default step");
+        }
+    }
+    
+        
+        
+    
+    // 默认执行
+    let message = "";
+    const { say, listen } = astTree.hash[status.nowStepID];
+
+    if (say) {
+        message += say.map((i) => {
+            if (i.type === "string") {
+                return i.args;
+            } else if (i.type === "var") {
+                return status.variable[i.args];
+            } else {
+                throw new Error("say args type error");
+            }
+        }).join('');
+    }
+    
+
+    const time = listen ? listen.limit : 0;
+
+    return {
+        message: message,
+        finish: astTree.exit.includes(status.nowStepID),
+        time: time,
+    };
+
+}
+
+function processSpeakInfo(astTree: AST, status: STATUS, message: string): string {
+    const speakInfo = (astTree.hash[status.nowStepID] || {}).say;
+    if (speakInfo) {
+        message += speakInfo.map((info) => {
+            if (info.type === "string") {
+                return info.args;
+            } else if (info.type === "var") {
+                return status.variable[info.args];
+            } else {
+                throw new Error("say args type error");
+            }
+        }).join('');
+    }
+
+    return message;
+}
+
+
