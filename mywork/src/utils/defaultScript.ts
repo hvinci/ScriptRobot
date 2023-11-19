@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-10-27 13:41:36
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-18 17:41:08
+ * @LastEditTime: 2023-11-19 21:34:42
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -126,7 +126,6 @@ step paymentMethods
 
 step deliveryDetails
     say "我们提供快捷可靠的配送服务。配送时间和费用可能会根据您所在的地区而有所不同。在结账时，您可以查看详细的配送选项和费用信息。如果有特殊要求，请告诉我，我们将尽力满足您的需求。"
-    listenTimeout 5
     branch "查询咖啡种类和价格", productQuery
     branch "下订单", placeOrder
     branch "查询订单状态", orderStatusQuery
@@ -143,7 +142,6 @@ step exit
 
 step silence 
     say "听不清，请您大声一点可以吗?"
-    listenTimeout 5
     branch "查询咖啡种类和价格", productQuery
     branch "下订单", placeOrder
     branch "查询订单状态", orderStatusQuery
@@ -151,7 +149,6 @@ step silence
     branch "投诉与建议", feedback
     branch "常见问题解答", faq
     branch "退出", exit
-    silenceAction silence
     defaultAction default
 
 step default 
@@ -166,7 +163,4 @@ step default
     branch "退出", exit
     silenceAction silence
     defaultAction default
-  
-
-
 `;

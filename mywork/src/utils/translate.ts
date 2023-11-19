@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-01 21:13:22
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-18 17:40:32
+ * @LastEditTime: 2023-11-19 21:59:23
  * @Description: 翻译语法树
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -94,7 +94,7 @@ function processEntry(message: string, ast: AST, status: STATUS) {
 
 function processSayInfo(ast: AST, status: STATUS, message: string): string {
     // sayInfo表示当前step中say的信息
-    const sayInfo = (ast.hash[status.nowStepID] || {}).say;
+    const sayInfo = (ast.hash[status.nowStepID]).say;
 
     //  若sayInfo不为空
     if (sayInfo) {

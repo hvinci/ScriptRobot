@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1700382928632" clover="3.2.0">
-  <project timestamp="1700382928632" name="All files">
-    <metrics statements="116" coveredstatements="116" conditionals="75" coveredconditionals="75" methods="19" coveredmethods="19" elements="210" coveredelements="210" complexity="0" loc="116" ncloc="116" packages="1" files="1" classes="1"/>
+<coverage generated="1700403437317" clover="3.2.0">
+  <project timestamp="1700403437317" name="All files">
+    <metrics statements="165" coveredstatements="165" conditionals="109" coveredconditionals="109" methods="30" coveredmethods="30" elements="304" coveredelements="304" complexity="0" loc="165" ncloc="165" packages="1" files="2" classes="2"/>
     <file name="parse.ts" path="/Users/vinci/Downloads/script-robot-save/mywork/src/utils/parse.ts">
-      <metrics statements="116" coveredstatements="116" conditionals="75" coveredconditionals="75" methods="19" coveredmethods="19"/>
+      <metrics statements="115" coveredstatements="115" conditionals="75" coveredconditionals="75" methods="19" coveredmethods="19"/>
       <line num="24" count="20" type="stmt"/>
       <line num="25" count="20" type="stmt"/>
       <line num="28" count="20" type="stmt"/>
@@ -90,36 +90,88 @@
       <line num="285" count="1" type="stmt"/>
       <line num="289" count="15" type="stmt"/>
       <line num="294" count="15" type="stmt"/>
-      <line num="296" count="15" type="stmt"/>
-      <line num="306" count="23" type="stmt"/>
-      <line num="308" count="23" type="cond" truecount="2" falsecount="0"/>
-      <line num="309" count="1" type="stmt"/>
-      <line num="314" count="22" type="stmt"/>
-      <line num="319" count="22" type="stmt"/>
-      <line num="330" count="7" type="stmt"/>
-      <line num="341" count="2" type="stmt"/>
-      <line num="343" count="6" type="stmt"/>
-      <line num="345" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="304" count="23" type="stmt"/>
+      <line num="306" count="23" type="cond" truecount="2" falsecount="0"/>
+      <line num="307" count="1" type="stmt"/>
+      <line num="312" count="22" type="stmt"/>
+      <line num="317" count="22" type="stmt"/>
+      <line num="328" count="7" type="stmt"/>
+      <line num="339" count="2" type="stmt"/>
+      <line num="341" count="6" type="stmt"/>
+      <line num="343" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="345" count="2" type="stmt"/>
       <line num="347" count="2" type="stmt"/>
-      <line num="349" count="2" type="stmt"/>
-      <line num="362" count="10" type="cond" truecount="2" falsecount="0"/>
-      <line num="363" count="1" type="stmt"/>
-      <line num="367" count="8" type="cond" truecount="2" falsecount="0"/>
-      <line num="368" count="1" type="stmt"/>
-      <line num="373" count="7" type="stmt"/>
-      <line num="376" count="27" type="stmt"/>
-      <line num="379" count="27" type="cond" truecount="5" falsecount="0"/>
+      <line num="360" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="361" count="1" type="stmt"/>
+      <line num="365" count="8" type="cond" truecount="2" falsecount="0"/>
+      <line num="366" count="1" type="stmt"/>
+      <line num="371" count="7" type="stmt"/>
+      <line num="374" count="27" type="stmt"/>
+      <line num="377" count="27" type="cond" truecount="5" falsecount="0"/>
+      <line num="378" count="1" type="stmt"/>
+      <line num="379" count="26" type="cond" truecount="4" falsecount="0"/>
       <line num="380" count="1" type="stmt"/>
-      <line num="381" count="26" type="cond" truecount="4" falsecount="0"/>
-      <line num="382" count="1" type="stmt"/>
-      <line num="386" count="25" type="cond" truecount="4" falsecount="0"/>
-      <line num="387" count="1" type="stmt"/>
-      <line num="390" count="24" type="cond" truecount="4" falsecount="0"/>
-      <line num="391" count="1" type="stmt"/>
-      <line num="394" count="23" type="cond" truecount="2" falsecount="0"/>
-      <line num="395" count="15" type="stmt"/>
-      <line num="396" count="79" type="cond" truecount="2" falsecount="0"/>
-      <line num="397" count="1" type="stmt"/>
+      <line num="384" count="25" type="cond" truecount="4" falsecount="0"/>
+      <line num="385" count="1" type="stmt"/>
+      <line num="388" count="24" type="cond" truecount="4" falsecount="0"/>
+      <line num="389" count="1" type="stmt"/>
+      <line num="392" count="23" type="cond" truecount="2" falsecount="0"/>
+      <line num="393" count="15" type="stmt"/>
+      <line num="394" count="79" type="cond" truecount="2" falsecount="0"/>
+      <line num="395" count="1" type="stmt"/>
+    </file>
+    <file name="translate.ts" path="/Users/vinci/Downloads/script-robot-save/mywork/src/utils/translate.ts">
+      <metrics statements="50" coveredstatements="50" conditionals="34" coveredconditionals="34" methods="11" coveredmethods="11"/>
+      <line num="17" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="33" count="21" type="cond" truecount="2" falsecount="0"/>
+      <line num="34" count="4" type="stmt"/>
+      <line num="35" count="4" type="stmt"/>
+      <line num="36" count="17" type="cond" truecount="2" falsecount="0"/>
+      <line num="37" count="5" type="stmt"/>
+      <line num="38" count="12" type="cond" truecount="2" falsecount="0"/>
+      <line num="39" count="2" type="stmt"/>
+      <line num="42" count="10" type="stmt"/>
+      <line num="45" count="33" type="stmt"/>
+      <line num="48" count="10" type="cond" truecount="4" falsecount="0"/>
+      <line num="51" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="53" count="2" type="stmt"/>
+      <line num="59" count="16" type="stmt"/>
+      <line num="60" count="16" type="stmt"/>
+      <line num="62" count="16" type="cond" truecount="2" falsecount="0"/>
+      <line num="63" count="15" type="stmt"/>
+      <line num="64" count="20" type="cond" truecount="2" falsecount="0"/>
+      <line num="65" count="15" type="stmt"/>
+      <line num="66" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="67" count="4" type="stmt"/>
+      <line num="69" count="1" type="stmt"/>
+      <line num="73" count="15" type="cond" truecount="2" falsecount="0"/>
+      <line num="75" count="15" type="stmt"/>
+      <line num="84" count="4" type="stmt"/>
+      <line num="86" count="3" type="stmt"/>
+      <line num="88" count="3" type="stmt"/>
+      <line num="97" count="4" type="stmt"/>
+      <line num="100" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="102" count="3" type="stmt"/>
+      <line num="104" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="105" count="2" type="stmt"/>
+      <line num="108" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="109" count="2" type="stmt"/>
+      <line num="112" count="1" type="stmt"/>
+      <line num="116" count="3" type="stmt"/>
+      <line num="120" count="5" type="stmt"/>
+      <line num="122" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="124" count="3" type="stmt"/>
+      <line num="125" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="127" count="1" type="stmt"/>
+      <line num="129" count="1" type="stmt"/>
+      <line num="135" count="2" type="stmt"/>
+      <line num="136" count="2" type="stmt"/>
+      <line num="137" count="2" type="stmt"/>
+      <line num="139" count="2" type="stmt"/>
+      <line num="141" count="2" type="stmt"/>
+      <line num="143" count="1" type="stmt"/>
+      <line num="146" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>

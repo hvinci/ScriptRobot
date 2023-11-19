@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-17 23:13:18
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 16:35:23
+ * @LastEditTime: 2023-11-19 19:30:34
  * @Description: 解析脚本
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -132,7 +132,7 @@ function parseToken(tokens: string[], words: string[]) {
         default:
             // 如果不是以上的 token 类型，则抛出异常
             throw new Error(
-                "Your type must be one of step, speak, listen, branch, silence, default,or exit. At Line: " +
+                "Your type must be one of step, say, listen, branch, silence, default,or exit. At Line: " +
                 cline.toString()
             );
     }
@@ -292,8 +292,6 @@ function parseSilence(args: string) {
     }
 
     ast.hash[current].silence = silenceInfo;
-
-    console.log(`Parsed Silence at Line: ${cline}`);
 
 }
 
