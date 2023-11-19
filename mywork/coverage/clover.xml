@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1700411242194" clover="3.2.0">
-  <project timestamp="1700411242194" name="All files">
+<coverage generated="1700413286812" clover="3.2.0">
+  <project timestamp="1700413286812" name="All files">
     <metrics statements="165" coveredstatements="165" conditionals="109" coveredconditionals="109" methods="30" coveredmethods="30" elements="304" coveredelements="304" complexity="0" loc="165" ncloc="165" packages="1" files="2" classes="2"/>
     <file name="parse.ts" path="/Users/vinci/Downloads/script-robot-save/mywork/src/utils/parse.ts">
       <metrics statements="115" coveredstatements="115" conditionals="75" coveredconditionals="75" methods="19" coveredmethods="19"/>
