@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-17 23:13:18
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-18 17:40:14
+ * @LastEditTime: 2023-11-19 16:35:23
  * @Description: 解析脚本
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -25,7 +25,7 @@ export function parse(script: string): AST {
     cline = 1;
 
     // 初始化语法树
-    initialize();
+    initialize(script);
 
     // 对脚本助行解析
     parseScript(script);
@@ -40,12 +40,16 @@ export function parse(script: string): AST {
  * @description: 初始化语法树
  * @return {*}
  */
-function initialize() {
+function initialize(script:string) {
     ast = {
         hash: {},
         entry: "",
         exit: "",
         variable: {},
+    }
+
+    if(typeof script != "string"){
+        throw new TypeError("Expected code to be a string");
     }
 }
 
@@ -126,7 +130,6 @@ function parseToken(tokens: string[], words: string[]) {
             parseCalculate(sentence);
             break;
         default:
-            console.log("token:", type);
             // 如果不是以上的 token 类型，则抛出异常
             throw new Error(
                 "Your type must be one of step, speak, listen, branch, silence, default,or exit. At Line: " +
@@ -146,6 +149,16 @@ function parseStep(args: string) {
     // 分割参数
     const stepNames = args.split(" ");
 
+    if(stepNames.length == 0 || stepNames[0].length == 0) {
+        throw new Error(
+            "Expected step to have one step id. At Line: " + cline.toString()
+        );
+    } else if (stepNames.length > 1) {
+        throw new Error(
+            "Expected step to have only one step id. At Line: " +
+                cline.toString()
+        );
+    }
     // 存入stepName 
     const name = stepNames[0];
 
@@ -157,8 +170,6 @@ function parseStep(args: string) {
 
     // 存储当前的step步骤
     current = name;
-
-    console.log(`Parsed Step: ${name} at Line: ${cline}`);
 
 }
 
@@ -205,7 +216,6 @@ function parseSay(sentence: string, words: string[]) {
     // 设置当前step中的speak参数
     ast.hash[current].say = say;
 
-    console.log(`Parsed Speak at Line: ${cline}`);
 }
 
 /**
@@ -226,8 +236,6 @@ function parseListen(argc: string): void {
     };
 
     ast.hash[current].listen = waitFor;
-
-    console.log(`Parsed Listen at Line: ${cline}`);
 }
 
 /**
@@ -241,19 +249,27 @@ function parseBranch(sentence: string, words: string[]) {
     if (!answer || !goto) {
         throw new Error(`You must give branch two args. At Line: ${cline}`);
     }
-    if (typeof answer != "string") {
+    if (answer != "string") {
+        
         throw new Error(`Your branch must have an answer string. At Line: ${cline}`);
     }
-    const branchinfo = ast.hash[current].branch || [];
-    branchinfo.push({
-        answer: words[0].trim(),
-        stepID: goto,
-        lineNum: cline,
-    });
+    const branchinfo = ast.hash[current].branch;
+    if(branchinfo){
+        branchinfo.push({
+            answer: words[0],
+            stepID: goto,
+            lineNum: cline,
+        });
+    } else {
+        ast.hash[current].branch = [
+            {
+                answer: words[0],
+                stepID: goto,
+                lineNum: cline,
+            }
+        ];
+    }
 
-    ast.hash[current].branch = branchinfo;
-
-    console.log(`Parsed Branch at Line: ${cline}`);
 }
 
 /**
@@ -302,7 +318,6 @@ function parseDefault(args: string) {
 
     ast.hash[current].default = defaultInfo;
 
-    console.log(`Parsed Default at Line: ${cline}`);
 }
 
 /**
@@ -314,7 +329,6 @@ function parseExit() {
     // 将 stepId 加入到 exit 列表中
     ast.exit = current;
 
-    console.log(`Parsed Exit at Line: ${cline}`);
 }
 
 /**
@@ -334,7 +348,7 @@ function parseCalculate(sentence: string): void {
 
     ast.hash[current].calculate = culculate;
 
-    console.log(`Parsed Calculate at Line: ${cline}`);
+   
 }
 
 /**
@@ -343,7 +357,7 @@ function parseCalculate(sentence: string): void {
  */
 
 
-function check(check: AST = ast): void {
+export function check(check: AST = ast): void {
     //检查是否为空
     if (Object.keys(check.hash).length == 0) {
         throw new Error("Expected at least one step");
@@ -354,37 +368,37 @@ function check(check: AST = ast): void {
         throw new Error("Expected at least one exit step");
     }
 
-    console.log("check each step in the script tree:");
+    
 
     for (const [stepId, step] of Object.entries(check.hash)) {
-        console.log(`Validating Step: ${stepId} at Line: ${step.line?.toString() || 'unknown'}`);
+        
 
         const { default: defaultList, silence, listen, branch, line } = step;
 
         // 至少有一个有效的default
         if (!defaultList && !check.exit.includes(stepId) && !step.calculate) {
-            throw new Error(`Expected default step. At Line: ${line?.toString() || 'unknown'}`);
+            throw new Error(`Expected default step. At Line: ${line?.toString() }`);
         } else if (defaultList && !Object.keys(check.hash).includes(defaultList.stepID)) {
-            throw new Error(`Default step ${defaultList.stepID} is invalid. At Line: ${defaultList.lineNum?.toString() || 'unknown'}`);
+            throw new Error(`Default step ${defaultList.stepID} is invalid. At Line: ${defaultList.lineNum?.toString() }`);
         }
 
         // silence有效
         if (silence && !Object.keys(check.hash).includes(silence.stepID)) {
-            throw new Error(`Silence step ${silence.stepID} is invalid. At Line: ${silence.lineNum?.toString() || 'unknown'}`);
+            throw new Error(`Silence step ${silence.stepID} is invalid. At Line: ${silence.lineNum?.toString() }`);
         }
         // listen不可以小于0
         if (listen && listen.limit <= 0) {
-            throw new Error(`Listen time is invalid. At Line: ${listen.lineNum?.toString() || 'unknown'}`);
+            throw new Error(`Listen time is invalid. At Line: ${listen.lineNum?.toString() }`);
         }
         // branch必须有效
         if (branch) {
             for (const { stepID, lineNum } of branch) {
                 if (!Object.keys(check.hash).includes(stepID)) {
-                    throw new Error(`Branch step ${stepID} is invalid. At Line: ${lineNum?.toString() || 'unknown'}`);
+                    throw new Error(`Branch step ${stepID} is invalid. At Line: ${lineNum?.toString() }`);
                 }
             }
         }
     }
-    console.log("No Problem!")
+    
 }
 
