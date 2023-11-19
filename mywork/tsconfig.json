@@ -13,8 +13,9 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
-    ],
+      "webpack-env",
+      "jest"
+    ],   
     "paths": {
       "@/*": [
         "src/*"
@@ -37,6 +38,7 @@
     "components.d.ts"
 , "src/utils/more.script"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.spec.ts"  
   ]
 }
