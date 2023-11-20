@@ -4,9 +4,8 @@
  * @Author: hvinci
  * @Date: 2023-11-02 21:13:08
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-20 00:20:24
+ * @LastEditTime: 2023-11-20 13:13:15
  * @Description: 按钮部分设计
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 
 <template>
@@ -44,7 +43,7 @@
     <el-row>
       <el-col :span="24" style="text-align: center; margin-bottom: 20px;">
         <el-tooltip content="Click on me if you want to know the syntax!" placement="right" effect="light">
-          <el-button class="buttonstyle" @click="bottomLeftButtonClick">Script Structure</el-button>
+          <el-button class="buttonstyle" @click="checkScriptStructure">SCRIPT STRUCTURE</el-button>
         </el-tooltip>
       </el-col>
     </el-row>
@@ -63,16 +62,16 @@ export default defineComponent({
   components: { MonacoEditor },
   setup() {
 
-    // 追踪脚本变化
+    /**
+     * @description: 追踪脚本变化
+     * @return {*}
+     */
     const chat = reactive({
       scriptinfo: "",
     });
 
-    /**
-     * @description:  save script after change
-     * @param {*} script
-     * @return {*}
-     */
+    chat.scriptinfo = bus.defaultScript;
+    
     const ScriptChange = (script: string) => {
       chat.scriptinfo = script;
     };
@@ -83,16 +82,18 @@ export default defineComponent({
      */
     const apply = () => {
       console.log('apply Function Called');
-      if (bus.activeScript === chat.scriptinfo) {
+      if (bus.activeScript == chat.scriptinfo) {
+        // 如果脚本已经被应用
         ElMessage.warning("Oops, your script is already as effective as a ninja!");
         return;
       } else {
+        // 将脚本更改为用户新定义的脚本
         bus.activeScript = chat.scriptinfo;
       }
     };
 
     /**
-     * @description: download the activeScript
+     * @description: download 按钮
      * @return {*}
      */
     const download = () => {
@@ -138,7 +139,7 @@ export default defineComponent({
     };
 
     /**
-     * @description: reset script to default
+     * @description: reset 按钮
      * @return {*}
      */
     const reset = () => {
@@ -147,7 +148,7 @@ export default defineComponent({
     };
 
     /**
-     * @description: upload script from local
+     * @description: upload 按钮
      * @param {*} file
      * @return {*}
      */
@@ -166,13 +167,14 @@ export default defineComponent({
       reader.readAsText(file);
       return false;
     };
-
-    chat.scriptinfo = bus.defaultScript;
     
-    const bottomLeftButtonClick = () => {
+    /**
+     * @description: 查看script的语法结构
+     * @return {*}
+     */    
+    const checkScriptStructure = () => {
           ElMessageBox.alert(
-            "step StepName<br/>say \"Hello, World!\" $variableName<br/>listenTimeout 10<br/>branch answer1, StepName1<br/>branch answer2, StepName2<br/>silenceAction StepName<br/>defaultAction StepName<br/>calculate arg1, arg2, arg3<br/>exit"
-            ,
+            "step StepName<br/>say \"Hello, World!\" $variableName<br/>listenTimeout 10<br/>branch answer1, StepName1<br/>branch answer2, StepName2<br/>silenceAction StepName<br/>defaultAction StepName<br/>calculate arg1, arg2, arg3<br/>exit",
             "Announcement", {
       confirmButtonText: "OK",
       dangerouslyUseHTMLString: true, 
@@ -187,7 +189,7 @@ export default defineComponent({
       reset,
       uploadFile,
       download,
-      bottomLeftButtonClick, 
+      checkScriptStructure, 
     };
   },
 });
@@ -269,6 +271,7 @@ export default defineComponent({
     transform: translateY(0);
   }
 }
+
 #bottomLeftButton {
   position: fixed;
   bottom: 90px;

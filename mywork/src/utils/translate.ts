@@ -2,10 +2,8 @@
  * @Author: hvinci
  * @Date: 2023-11-01 21:13:22
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 23:38:20
+ * @LastEditTime: 2023-11-20 13:45:32
  * @Description: 翻译语法树
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
 import { AST, VARIABLE, ANSWER, STATUS } from "./interface";
 
@@ -41,12 +39,16 @@ export function translate(
 
     if (enter) {
         const message = "";
+        // 处理entry
         processEntry(message, ast, status);
     } else if (silence) {
+        // 处理silence
         processSilence(ast, status);
     } else if (ast.hash[status.nowStepID].calculate) {
+        // 处理calculate
         processCalculate(ast, status, answer);
     } else {
+        // 处理 branch 和 default
         // 从当前对话步骤的 AST 中获取 branch 和 default 属性
         const { branch, default: defaultList } = ast.hash[status.nowStepID];
 
@@ -63,8 +65,9 @@ export function translate(
         }
     }
 
+    // 每个step都一定有say
 
-    // 默认执行
+    // 处理say和listen
     let message = "";
     const { say, listen } = ast.hash[status.nowStepID];
 

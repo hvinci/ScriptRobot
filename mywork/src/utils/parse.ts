@@ -2,17 +2,15 @@
  * @Author: hvinci
  * @Date: 2023-11-17 23:13:18
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 23:42:21
+ * @LastEditTime: 2023-11-20 13:42:19
  * @Description: 解析脚本
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
 
 import { AST, SAY, LISTEN, SLIENCE, DEFAULT } from "./interface"
 
-let ast: AST;
-let cline: number;
-let current: string;
+let ast: AST; // 语法树
+let cline: number; // 当前行号
+let current: string; // 当前step
 
 /**
  * @description: 将脚本文件解析为语法树
@@ -27,7 +25,7 @@ export function parse(script: string): AST {
     // 初始化语法树
     initialize(script);
 
-    // 对脚本助行解析
+    // 对脚本逐行解析
     parseScript(script);
 
     // 验证
@@ -47,7 +45,7 @@ function initialize(script:string) {
         exit: "",
         variable: {},
     }
-
+    // 检查脚本类型是否为字符串
     if(typeof script != "string"){
         throw new TypeError("Expected code to be a string");
     }
@@ -59,11 +57,12 @@ function initialize(script:string) {
  * @return {*} 
  */
 function parseScript(script: string) {
-
+    
     const lines = script.split("\n");
-
+    // 逐行分隔并解析
     for (const line of lines.map(line => line.trim())) {
-        if (line === "" || line.startsWith("#")) {
+        // 跳过注释
+        if (line == "" || line.startsWith("#")) {
             continue;
         }
 
@@ -98,6 +97,8 @@ function parseByLine(line: string) {
 
 function parseToken(tokens: string[], words: string[]) {
 
+    // 将token分隔为类型+参数
+    
     //获取 token 的类型
     const type = tokens[0].toLowerCase();
 
@@ -132,7 +133,7 @@ function parseToken(tokens: string[], words: string[]) {
         default:
             // 如果不是以上的 token 类型，则抛出异常
             throw new Error(
-                "Your type must be one of step, say, listen, branch, silence, default,or exit. At Line: " +
+                "Your type must be one of step, say, listentimeout, branch, silenceaction, defaultaction,or exit. At Line: " +
                 cline.toString()
             );
     }
@@ -147,21 +148,22 @@ function parseToken(tokens: string[], words: string[]) {
 
 function parseStep(args: string) {
     // 分割参数
-    const stepNames = args.split(" ");
-
-    if(stepNames.length == 0 || stepNames[0].length == 0) {
+    const stepInfo = args.split(" ");
+    // step后加的参数有且只能有一个,为该step的stepInfo
+    if(stepInfo.length == 0 || stepInfo[0].length == 0) {
         throw new Error(
             "Expected step to have one step id. At Line: " + cline.toString()
         );
-    } else if (stepNames.length > 1) {
+    } else if (stepInfo.length > 1) {
         throw new Error(
             "Expected step to have only one step id. At Line: " +
                 cline.toString()
         );
     }
     // 存入stepName 
-    const name = stepNames[0];
-
+    const name = stepInfo[0];
+    
+    // 加入行号信息
     ast.hash[name] = { line: cline, };
 
     // 添加entry
@@ -225,7 +227,7 @@ function parseSay(sentence: string, words: string[]) {
 
 function parseListen(argc: string): void {
     const wait = parseInt(argc);
-
+    // 检查listenTimeout后的参数是否为数字
     if (isNaN(wait)) {
         throw new Error(`Expected time to be a number. At Line: ${cline}`);
     }
@@ -245,22 +247,26 @@ function parseListen(argc: string): void {
 
 
 function parseBranch(sentence: string, words: string[]) {
+    // branch后的参数为: 用户可能的回复 + 针对回复应该前往的step
     const [answer, goto] = sentence.split(",").map((item) => item.trim());
+
+    // 检查参数是否有且只有两个
     if (!answer || !goto) {
         throw new Error(`You must give branch two args. At Line: ${cline}`);
     }
+    // 检查用户回复是否为string类型
     if (answer != "string") {
         
         throw new Error(`Your branch must have an answer string. At Line: ${cline}`);
     }
     const branchinfo = ast.hash[current].branch;
-    if(branchinfo){
+    if(branchinfo){ // 如果branch已经存在则直接加入
         branchinfo.push({
             answer: words[0],
             stepID: goto,
             lineNum: cline,
         });
-    } else {
+    } else { // 如果branch不存在则创建branch
         ast.hash[current].branch = [
             {
                 answer: words[0],
@@ -280,7 +286,7 @@ function parseBranch(sentence: string, words: string[]) {
 function parseSilence(args: string) {
     // 分割参数
     const silence = args.split(" ");
-
+    // 检查silence后的参数是否有且只有一个
     if (silence.length != 1) {
         throw new Error(
             "Your silence must have one step. At Line: " + cline.toString()
@@ -302,7 +308,7 @@ function parseSilence(args: string) {
 
 function parseDefault(args: string) {
     const defaultLength = args.split(" ").length;
-
+    // 检查default后的参数是否有且只有一个
     if (defaultLength != 1) {
         throw new Error(
             "Your default must have one step. At Line: " + cline.toString()
@@ -337,25 +343,26 @@ function parseExit() {
 function parseCalculate(sentence: string): void {
     // 删除注释
     sentence = sentence.replace(/#.*$/, "");
-
+    // caculate后的参数应该为三个: 需要的变量 + 下一步的stepNames + 计算操作
     const [arg1, arg2, arg3] = sentence.split(",").map((item) => item.trim());
 
-    const culculate = ast.hash[current].calculate || ([] as string[][]);
+    const calculate = ast.hash[current].calculate || ([] as string[][]);
 
-    culculate.push([arg1, arg2, arg3]);
+    calculate.push([arg1, arg2, arg3]);
 
-    ast.hash[current].calculate = culculate;
+    ast.hash[current].calculate = calculate;
 
    
 }
 
 /**
- * @description: 解析check
+ * @description: 验证ast结构的正确性
  * @return {*}
  */
 
 
 export function check(check: AST = ast): void {
+
     //检查是否为空
     if (Object.keys(check.hash).length == 0) {
         throw new Error("Expected at least one step");
@@ -366,11 +373,8 @@ export function check(check: AST = ast): void {
         throw new Error("Expected at least one exit step");
     }
 
-    
-
     for (const [stepId, step] of Object.entries(check.hash)) {
         
-
         const { default: defaultList, silence, listen, branch, line } = step;
 
         // 至少有一个有效的default

@@ -254,7 +254,7 @@ test("如果出现无效的token:",()=>{
         defaultAction productQuery
         Step productQuery
         Exit`);
-    }).toThrow("Your type must be one of step, say, listen, branch, silence, default,or exit. At Line: 2");
+    }).toThrow("Your type must be one of step, say, listentimeout, branch, silenceaction, defaultaction,or exit. At Line: 2");
 });
 
 test("如果step缺少id:",()=>{

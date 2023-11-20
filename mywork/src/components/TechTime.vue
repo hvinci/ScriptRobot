@@ -2,10 +2,8 @@
  * @Author: hvinci
  * @Date: 2023-11-18 05:21:46
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-20 00:21:06
- * @Description: 
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ * @LastEditTime: 2023-11-20 13:17:31
+ * @Description: 时钟模块
 -->
 <template>
   <div class="tech-time">
@@ -56,7 +54,7 @@ export default {
   font-size: 30px;
   font-weight: bold;
   font-family: "Courier New", monospace;
-  color: rgb(66, 223, 31);
+  color: rgb(52, 194, 21);
 }
 
 .time {

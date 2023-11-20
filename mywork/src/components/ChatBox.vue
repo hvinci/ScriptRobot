@@ -3,10 +3,8 @@
  * @Author: hvinci
  * @Date: 2023-11-02 20:13:14
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 22:56:46
- * @Description: 聊天框部分
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ * @LastEditTime: 2023-11-20 13:15:49
+ * @Description: 聊天框部分 
 -->
 
 <template>
@@ -137,7 +135,7 @@ export default defineComponent({
                 return;
             }
 
-            let text = "Please enter the following parameters, separated by spaces:";
+            let text = "请输入以下参数,用空格分割: ";
             text += "姓名 账户余额";
 
             const inputPatternString = `^([^\\s]+(\\s|$)){${Object.keys(vars).length}}$`;
@@ -168,7 +166,7 @@ export default defineComponent({
                     };
                     bus.userList[username] = newUser;
 
-                    handleAnswer(); // 调用新的函数来处理结果
+                    handleAnswer(); 
                 })
                 .catch(() => {
                     ElMessage({

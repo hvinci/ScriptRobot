@@ -2,10 +2,8 @@
  * @Author: hvinci
  * @Date: 2023-10-23 23:06:45
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 23:42:19
+ * @LastEditTime: 2023-11-20 13:18:33
  * @Description:
- *
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 import { reactive, watchEffect } from "vue";
 import { ElMessage } from "element-plus";
