@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-19 22:24:02
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-20 22:38:46
+ * @LastEditTime: 2023-11-20 22:56:18
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -29,14 +29,11 @@
 # 二. 脚本设计
 
 ## 1. 保留字
-- Say
-- Listen
-- Default
-- Silence
-- Branch
-- Calculate
-- Exit
-- Step
+
+| Say       | Listen    | Default   | Silence   |
+| --------- | --------- | --------- | --------- |
+| Branch    | Calculate | Exit      | Step      |
+
 
 ## 2. 脚本语法
 
@@ -94,7 +91,7 @@
 # 四. 设计思路:
 
 &emsp;该项目允许用户在网页中实时编辑和执行脚本。同时，提供了聊天框，用户可以直接进行对话。还支持模拟多用户同时咨询的场景。
-在脚本运行方面，项目参考了PPT的实现方式并进行了优化。将脚本语言解析为语法树，通过前端用户的输入信息,根据对语法树的翻译来采取对应的响应.这有助于确保代码的正确性和执行的稳定性。通过这种方式，可以更有效地处理脚本，提高整体性能。
+&emsp;在脚本运行方面，项目参考了PPT的实现方式并进行了优化。将脚本语言解析为语法树，通过前端用户的输入信息,根据对语法树的翻译来采取对应的响应.这有助于确保代码的正确性和执行的稳定性。通过这种方式，可以更有效地处理脚本，提高整体性能。
 
 ## 设计模式与规范:
 1. 本项目采用了拥有类型的Javascript，即TypeScript，作为开发语言。这一选择旨在确保程序的正确性，同时兼顾了JavaScript敏捷开发的优势。相较于JavaScript的弱类型特性可能导致的错误，TypeScript通过引入类型系统来提高代码的稳定性和可维护性。
@@ -216,46 +213,105 @@
 ## 3. 核心部分及解析
 ### 后端:
 
-1. parse(script: string): AST
+#### 1. parse.ts
 ![Alt text](image-34.png)
-- function: 将脚本解析为语法树
-- args: script脚本
-- return: 语法树
-- description:
-&emsp;将脚本按行分割,逐行解析
-&emsp;依据脚本的语法结构,对每一行的被空格分割的每个部分进一步解析
-&emsp;最后对构建的语法树进行验证
+
+1. **初始化：**
+   - `initialize` 函数用于初始化语法树 (`ast`)。在这里，它检查传入的脚本是否为字符串类型，如果不是则抛出类型错误。
+
+2. **解析脚本：**
+   - `parseScript` 函数将脚本逐行解析，并调用 `parseByLine` 函数来处理每一行的内容。
+
+3. **解析行：**
+   - `parseByLine` 函数解析每一行的内容，使用正则表达式替换字符串并调用 `parseToken` 函数来处理每个 token。
+
+4. **解析 Token：**
+   - `parseToken` 函数根据 token 的类型调用相应的解析函数，如 `parseStep`、`parseSay`、`parseListen` 等。
+
+5. **解析 Step：**
+   - `parseStep` 函数解析 `step` 类型的 token，存储当前步骤的信息，并将其添加到语法树中。
+
+6. **解析 Say：**
+   - `parseSay` 函数解析 `say` 类型的 token，处理字符串和变量，并将其添加到当前步骤的 `say` 属性中。
+
+7. **解析 Listen：**
+   - `parseListen` 函数解析 `listentimeout` 类型的 token，将超时限制添加到当前步骤的 `listen` 属性中。
+
+8. **解析 Branch：**
+   - `parseBranch` 函数解析 `branch` 类型的 token，处理用户回复和下一步的信息，并将其添加到当前步骤的 `branch` 属性中。
+
+9. **解析 Silence：**
+   - `parseSilence` 函数解析 `silenceaction` 类型的 token，将静默操作的信息添加到当前步骤的 `silence` 属性中。
+
+10. **解析 Default：**
+    - `parseDefault` 函数解析 `defaultaction` 类型的 token，将默认操作的信息添加到当前步骤的 `default` 属性中。
+
+11. **解析 Exit：**
+    - `parseExit` 函数解析 `exit` 类型的 token，将当前步骤的 ID 添加到退出步骤列表中。
+
+12. **解析 Calculate：**
+    - `parseCalculate` 函数解析 `calculate` 类型的 token，处理变量和计算操作，并将其添加到当前步骤的 `calculate` 属性中。
+
+13. **验证：**
+    - `check` 函数用于验证语法树的正确性，包括检查是否有至少一个步骤、至少一个退出步骤以及各个步骤的默认、静默、监听和分支是否有效。
 
 
-2. check(check: AST = ast): void 
-![Alt text](image-35.png)
-- function: 验证构建的语法树是否正确
-- args: 构建的语法树
-- description:
-&emsp;一句脚本的语法结构规定对哈希表进行查验,包括:检查是否为空、检查是否为空、检查至少有一个有效的default、检查silence有效...
+#### 2. translate.ts
 
-3. getVari = (ast: AST): VARIABLE
-![Alt text](image-36.png)
-function: 获取用户输入的变量以供语法树使用
-return: 变量的值与名称
+![Alt text](image-46.png)
 
-4. export const init = (ast: AST, variable: VARIABLE): STATUS
-![Alt text](image-37.png)
-args: 语法树、变量
-return: 初始步骤与变量
+1. **获取变量：**
+   - `getVari` 函数用于获取语法树中的变量信息。
 
-5. export function translate
-![Alt text](image-38.png)
-function: 执行脚本,更新状态
-args:语法树、状态、用户回复、是否为入口、是否silence
-return :客服的回应
-description: 
-&emsp;通过接受前端应用聊天框ChatBox中用户输入的信息,结合对语法树的翻译进行相应的回复
-&emsp;分为enter、silence、calculate、branch default、say、listen等分支进行分析
+2. **初始化：**
+   - `init` 函数用于初始化对话状态，包括设置当前步骤为入口步骤 (`ast.entry`) 和传入的变量信息。
+
+3. **执行脚本：**
+   - `translate` 函数用于执行脚本。根据是否为初始步骤 (`enter`) 或静默状态 (`silence`)，执行相应的处理逻辑。
+   - 处理入口步骤、静默操作、计算操作以及分支和默认操作。
+
+4. **处理入口步骤：**
+   - `processEntry` 函数用于处理入口步骤，包括处理 `say` 和 `listen` 操作。
+
+5. **处理 Say 信息：**
+   - `processSayInfo` 函数用于处理当前步骤中的 `say` 操作，将字符串和变量信息映射为消息。
+
+6. **处理静默操作：**
+   - `processSilence` 函数用于处理静默操作，根据 `silence` 和 `default` 属性切换到相应的步骤。
+
+7. **处理计算操作：**
+   - `processCalculate` 函数用于处理计算操作，根据表达式计算结果并更新变量，然后切换到下一个步骤。
+
 
 ### 前端:
 
-#### 1. 按钮组件: Button.vue
+#### 1. 主界面: App.vue
+
+![Alt text](image-48.png)
+![Alt text](image-47.png)
+1. **模板部分：**
+   - 使用了 Vue.js 的模板语法，定义了页面的结构。
+   - 包含一个 `Chat` 组件，负责处理聊天窗口的显示。
+   - 包含一些其他组件，如 `BottonDesign` 和 `TechTime`。
+   - 提供了一个点击开始聊天的提示。
+
+2. **脚本部分：**
+   - 使用 TypeScript 编写脚本，引入了 Vue.js 的 `defineComponent` 函数。
+   - 引入了 `Chat`、`BottonDesign` 和 `TechTime` 组件。
+   - 设置了组件的名称为 "App"。
+
+3. **样式部分：**
+   - 使用了 SCSS 预处理器编写样式。
+   - 设置了应用的背景图片、颜色等样式。
+   - 包含一些 Chat 组件的样式调整，如聊天窗口的 z-index 设置。
+
+4. **其他：**
+   - 包含了一些特殊样式设置，如消息框的样式、头部样式等。
+   - 在页面底部提供了一个点击开始聊天的提示，通过 CSS 动画设置了闪烁效果。
+
+&emsp;这个模块主要目的是创建一个具有聊天机器人功能的 Web 应用。它通过 Vue.js 来管理组件和状态，使得页面结构、脚本和样式能够清晰地组织和交互。页面提供了一个友好的用户界面，包括聊天窗口和一些其他组件，同时通过动画提供了引导用户开始聊天的提示。整体上，这是一个用于展示聊天机器人的简单而精美的页面。
+
+#### 2. 按钮组件: Button.vue
 ![Alt text](image-40.png)
 ##### 1. 模板部分：
 1. **Monaco Editor：** 使用Monaco Editor组件编辑Elixir脚本。
@@ -278,12 +334,13 @@ description:
 - **动画效果：** 使用CSS关键帧动画为按钮添加了悬停时的动画效果。
 
 - 使用了Element Plus库的提示框和消息框组件。
+    - upload模块使用了el-upload组件
 - 使用了Vue 3的`reactive`和`toRefs`来处理响应式数据。
 - 使用了事件总线（`bus`）来共享数据，例如`defaultScript`和`activeScript`。
 
-这个组件提供了一个用户友好的界面，允许用户编辑、应用、重置、上传和下载脚本，并通过按钮点击查看脚本的语法结构。
+&emsp;这个组件提供了一个用户友好的界面，允许用户编辑、应用、重置、上传和下载脚本，并通过按钮点击查看脚本的语法结构。
 
-#### 2. 聊天框部分: ChatBox.vue
+#### 3. 聊天框部分: ChatBox.vue
 ![Alt text](image-41.png)
 ##### 1. 模板部分：
 1. **UserList组件：** 用于显示用户列表。
@@ -311,11 +368,10 @@ description:
 - 使用了自定义的翻译和状态处理工具函数。
 - 使用了Vue 3的`reactive`和`toRefs`来处理响应式数据。
 
-这个组件提供了一个基于自然语言的聊天界面，用户可以与机器人进行交互，聊天过程中保存了用户和机器人的消息记录。
+&emsp;这个组件提供了一个基于自然语言的聊天界面，用户可以与机器人进行交互，聊天过程中保存了用户和机器人的消息记录。
 
-#### 3. 动态时间模块: TechTime.vue
+#### 4. 动态时间模块: TechTime.vue
 ![Alt text](image-42.png)
-这个Vue.js文件是一个时钟模块的组件，提供了显示当前日期和时间的功能。以下是主要组件和功能的中文解释：
 
 ##### 1. 模板部分：
 1. `<div class="date">{{ currentDate }}</div>`: 显示当前日期的部分。
@@ -342,9 +398,9 @@ description:
 - 使用Vue 3的`ref`和`onMounted`来处理响应式数据和生命周期钩子。
 - 样式中的`scoped`关键字表示这些样式只在当前组件中起作用。
 
-这个组件通过Vue.js实现了一个简单的时钟模块，提供了显示日期和时间的功能，并通过CSS动画为时间部分添加了脉动效果。
+&emsp;这个组件通过Vue.js实现了一个简单的时钟模块，提供了显示日期和时间的功能，并通过CSS动画为时间部分添加了脉动效果。
 
-#### 4. 用户列表模块: UserList.vue
+#### 5. 用户列表模块: UserList.vue
 
 ![Alt text](image-43.png)
 
@@ -367,7 +423,7 @@ description:
 - 样式中的`scoped`关键字表示这些样式只在当前组件中起作用。
 - 提供了一个警告信息，说明这些用户名已经被占用，请不要重复使用，由AgentCat提供。
 
-这个组件提供了一个简单的用户列表显示，包含在线用户的用户名，并通过样式和标题进行装饰。
+&emsp;这个组件提供了一个简单的用户列表显示，包含在线用户的用户名，并通过样式和标题进行装饰。
 
 
 
@@ -377,19 +433,18 @@ description:
 &emsp;在测试阶段，Jest框架发挥了测试桩的关键作用，能够模拟生成AST语法树和用户输入。这使得我们能够独立地对parse和translate两个模块进行单元测试，而无需考虑它们之间的相互依赖关系。
 
 ![Alt text](image-44.png)
-
+![Alt text](image-45.png)
 
 &emsp;Jest的测试脚本具有高度自动化，只需运行 `npm run test` 命令即可触发自动化测试流程，并在完成后输出详细的测试结果。这为开发人员提供了便捷的方式来验证代码的正确性，同时节省了手动测试的时间和精力。
 
 &emsp;通过Jest的测试桩function，我们能够模拟各种场景，包括生成AST和用户输入的不同情况，以确保代码在各种情境下都能正确执行。这种测试方法有助于发现潜在的问题并提高代码的质量。
 
 ![Alt text](image-4.png)
-
+![Alt text](image-49.png)
 # 八. 效果展示:
 
 **网页主页面:**
 ![Alt text](image-5.png)
-
 
 - 点击apply:应用当前输入框/用户恢复默认的脚本
 - 点击reset:重置脚本为默认脚本
