@@ -359,13 +359,13 @@ step default
     );
 });
 
-const ast2 = JSON.parse(
+const astTest = JSON.parse(
     '{"hashTable": {"welcome": {"line": 1,"say": [{ "type": "var", "args": "$name", "line": 2 },{"type": "string","args": "您好！欢迎光临瑞幸咖啡！我是您的智能咖啡助手。有什么可以帮助您的吗?","line": 2}],"listen": { "time": 5, "line": 3 },"branch": [{ "answer": "投诉", "nextStepId": "complainProc", "line": 4 },{ "answer": "账单", "nextStepId": "billProc", "line": 5 }],"silence": { "args": "silenceProc", "line": 6 }},"complainProc": {"line": 8,"say": [{"type": "string","args": "如果您想订购咖啡，只需告诉我您想要的产品的价格.我将为您计算您的账户余额.您当前的余额为:","line": 9}],"listen": { "time": 5, "line": 10 },"default": { "args": "thanks", "line": 11 }},"thanks": {"line": 12,"say": [{ "type": "string", "args": "购买成功,您的账户余额为:", "line": 13 }]},"billProc": {"line": 15,"say": [{ "type": "string", "args": "您的本月账单是", "line": 16 },{ "type": "var", "args": "$amount", "line": 16 },{"type": "string","args": "感谢您选择瑞幸咖啡！再见。","line": 16}]},"silenceProc": {"line": 18,"say": [{"type": "string","args": "听不清，请您大声一点可以吗?","line": 19}],"listen": { "time": 5, "line": 20 },"branch": [{ "answer": "投诉", "nextStepId": "complainProc", "line": 21 },{ "answer": "账单", "nextStepId": "billProc", "line": 22 }],"silence": { "args": "silenceProc", "line": 23 },"default": { "args": "defaultProc", "line": 24 }},"defaultProc": {"line": 25,"say": [{"type": "string","args": "抱歉，我不明白你的意思","line": 26}],"branch": [{ "answer": "投诉", "nextStepId": "complainProc", "line": 27 },{ "answer": "账单", "nextStepId": "billProc", "line": 28 }],"silence": { "args": "silenceProc", "line": 29 },"default": { "args": "defaultProc", "line": 30 }}},"entry": "welcome","exitStep": ["thanks", "billProc"],"vars": { "$name": "", "$amount": "" }}'
 );
 
 test("没有defaultList", () => {
     expect(() => {
-        check(ast2);
+        check(astTest);
     }).toThrow();
 });
 

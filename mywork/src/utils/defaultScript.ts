@@ -2,14 +2,14 @@
  * @Author: hvinci
  * @Date: 2023-10-27 13:41:36
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-19 21:34:42
+ * @LastEditTime: 2023-11-20 14:11:47
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
 export const defaultScript = `# comment
 step welcome 
-    say $name+"您好！欢迎光临瑞幸咖啡！我是您的智能咖啡助手。有什么可以帮助您的吗?"
+    say $name+"您好!欢迎光临瑞幸咖啡!我是您的智能咖啡助手。有什么可以帮助您的吗?"
     listenTimeout 5
     branch "查询咖啡种类和价格", productQuery
     branch "下订单", placeOrder
