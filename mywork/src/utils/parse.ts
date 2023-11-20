@@ -2,7 +2,7 @@
  * @Author: hvinci
  * @Date: 2023-11-17 23:13:18
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-20 13:42:19
+ * @LastEditTime: 2023-11-20 14:31:50
  * @Description: 解析脚本
  */
 
@@ -368,7 +368,7 @@ export function check(check: AST = ast): void {
         throw new Error("Expected at least one step");
     }
 
-    // 检查是否可以退出
+    // 检查是否为空
     if (check.exit.length == 0) {
         throw new Error("Expected at least one exit step");
     }
