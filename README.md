@@ -2,12 +2,12 @@
  * @Author: hvinci
  * @Date: 2023-10-23 22:54:25
  * @LastEditors: hvinci
- * @LastEditTime: 2023-11-06 15:10:50
+ * @LastEditTime: 2025-02-26 14:34:00
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
-# 9
+# 脚本翻译机器人
 
 ## Project setup
 ```
